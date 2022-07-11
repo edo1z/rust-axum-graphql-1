@@ -60,6 +60,21 @@ impl BookData {
     pub fn list(&self) -> &Vec<Book> {
         &self.data
     }
+    pub fn find_all_by_ids(&self, book_ids: Vec<ID>) -> Vec<Book> {
+        self.data
+            .iter()
+            .filter_map(|x| {
+                if book_ids
+                    .iter()
+                    .any(|book_id| book_id.to_string() == x.id.to_string())
+                {
+                    Some(x.clone())
+                } else {
+                    None
+                }
+            })
+            .collect()
+    }
     pub fn find(&self, id: String) -> Option<Book> {
         let result = self.data.iter().find(|&x| x.id.to_string() == id);
         result.cloned()
