@@ -4,6 +4,7 @@ use async_graphql::{Object, ID};
 pub struct Book {
     pub id: ID,
     pub title: String,
+    pub author_id: Option<ID>,
 }
 #[Object]
 impl Book {

@@ -45,7 +45,7 @@ impl MutationRoot {
         author_id: Option<String>,
     ) -> Result<Book, String> {
         let mut storage = ctx.data_unchecked::<ArcStorage>().lock().unwrap();
-        storage.book.add(title)
+        storage.add_book(title, author_id)
     }
 
     pub async fn add_author(&self, ctx: &Context<'_>, name: String) -> Result<Author, String> {
