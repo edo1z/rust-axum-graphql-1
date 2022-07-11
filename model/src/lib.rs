@@ -2,7 +2,7 @@ pub mod author;
 pub mod book;
 pub mod dummy_data;
 
-use async_graphql::{EmptyMutation, EmptySubscription, Object, Schema};
+use async_graphql::{EmptySubscription, Object, Schema};
 use author::Author;
 use book::Book;
 
@@ -23,6 +23,12 @@ impl QueryRoot {
 
     pub async fn authors(&self) -> Vec<Author> {
         dummy_data::authors()
+    }
+
+    pub async fn author(&self, id: String) -> Option<Author> {
+        let authors = dummy_data::authors();
+        let result = authors.iter().find(|&x| x.id.to_string() == id);
+        result.cloned()
     }
 }
 
