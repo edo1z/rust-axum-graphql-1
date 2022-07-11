@@ -1,8 +1,12 @@
+pub mod author;
+pub mod book;
 pub mod dummy_data;
 
-use async_graphql::{EmptyMutation, EmptySubscription, Object, Schema, ID};
+use async_graphql::{EmptyMutation, EmptySubscription, Object, Schema};
+use author::Author;
+use book::Book;
 
-pub type AppSchema = Schema<QueryRoot, EmptyMutation, EmptySubscription>;
+pub type AppSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
 pub struct QueryRoot;
 
@@ -16,19 +20,17 @@ impl QueryRoot {
         let result = books.iter().find(|&x| x.id.to_string() == id);
         result.cloned()
     }
+
+    pub async fn authors(&self) -> Vec<Author> {
+        dummy_data::authors()
+    }
 }
 
-#[derive(Clone)]
-pub struct Book {
-    pub id: ID,
-    pub title: String,
-}
+pub struct MutationRoot;
+
 #[Object]
-impl Book {
-    pub async fn id(&self) -> ID {
-        self.id.clone()
-    }
-    pub async fn title(&self) -> String {
-        self.title.clone()
+impl MutationRoot {
+    pub async fn add_book(&self, title: String, author_id: Option<String>) -> Result<Book, String> {
+        Err(String::from("ERROR! failed add book"))
     }
 }

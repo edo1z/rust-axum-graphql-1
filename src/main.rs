@@ -3,11 +3,11 @@ mod handler;
 use async_graphql::*;
 use axum::{extract::Extension, routing::get, Router};
 use handler::{graphql_handler, graphql_playground};
-use model::QueryRoot;
+use model::{MutationRoot, QueryRoot};
 
 #[tokio::main]
 async fn main() {
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).finish();
+    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).finish();
     let app = Router::new()
         .route("/", get(graphql_playground).post(graphql_handler))
         .layer(Extension(schema));
